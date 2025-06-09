@@ -1,0 +1,1 @@
+Falta recibir las coordenadas, leer las guardadas (supongo que en un json, o mariadb), y guardar las nuevas coordenadas
