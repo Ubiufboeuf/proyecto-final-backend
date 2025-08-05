@@ -3,6 +3,6 @@
       ini_set('display_startup_errors', 0); // Desactivar la visualización de errores de inicio
 
       ini_set('log_errors', 1); // Activar el registro de errores
-      ini_set('error_log', 'Failures.log'); // Especific
+      ini_set('error_log', __DIR__.'/Failures.log'); // Especific
 
 ?>
