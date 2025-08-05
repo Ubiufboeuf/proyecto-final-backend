@@ -1,5 +1,5 @@
 <?php
-require 'vendor/autoload.php';
+require_once __DIR__ . '/websocket/vendor/autoload.php';
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
