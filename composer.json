@@ -1,0 +1,14 @@
+{
+    "name": "proxeon/proyecto-final-backend",
+    "description": "proyecto de fin de año",
+    "type": "project",
+    "require": {
+        "cboden/ratchet": "^0.4.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Proxeon\\ProyectoFinalBackend\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
