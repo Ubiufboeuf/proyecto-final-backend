@@ -10,15 +10,15 @@ class UsuarioModel {
     }
     
     public function registrarUsuario($nombre, $contraseña, $correo) {
-        // Verificar si el email ya existe
-        $checkSql = "SELECT id FROM usuario WHERE email = ?";
+        // Verificar si el correo ya existe
+        $checkSql = "SELECT ID_Usuario FROM usuario WHERE correo = ?";
         $checkStmt = $this->conn->prepare($checkSql);
         $checkStmt->bind_param("s", $correo);
         $checkStmt->execute();
         $result = $checkStmt->get_result();
-        
+
         if ($result->num_rows > 0) {
-            return ['success' => false, 'message' => 'El email ya está registrado'];
+            return ['success' => false, 'message' => 'El correo ya está registrado'];
         }
         
         // Registrar nuevo usuario

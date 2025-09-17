@@ -34,7 +34,7 @@ class UsuarioController {
             $result = $model->loginUsuario($email, $password);
             
             if ($result['success']) {
-                $_SESSION['user_id'] = $result['user']['id'];
+                $_SESSION['user_id'] = $result['user']['ID_Usuario'];
                 $_SESSION['user_name'] = $result['user']['nombre'];
                 return json_encode(['success' => true, 'message' => 'Login exitoso']);
             }
