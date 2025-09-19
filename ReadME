@@ -1,0 +1,70 @@
+# Proyecto Final Backend
+
+## Descripción
+Este es el backend de un proyecto final desarrollado en PHP que incluye funcionalidades de autenticación de usuarios y un servidor de chat en tiempo real utilizando WebSocket. El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información de los usuarios.
+
+## Características Principales
+- **Registro de Usuarios**: Permite crear nuevas cuentas con validación de datos.
+- **Login y Autenticación**: Verifica credenciales y maneja sesiones de usuario.
+- **Logout**: Cierra la sesión del usuario actual.
+- **Verificación de Sesión**: Comprueba si un usuario está logueado.
+- **Chat en Tiempo Real**: Servidor WebSocket que permite comunicación instantánea entre clientes.
+- **Conexión Segura a BD**: Utiliza prepared statements para prevenir inyecciones SQL.
+
+## Estructura del Proyecto
+El código está organizado en la carpeta `src/` con las siguientes componentes:
+
+### `src/api.php`
+- Implementa un servidor WebSocket usando la librería Ratchet.
+- Maneja conexiones de clientes, recepción de mensajes y desconexiones.
+- El servidor corre en el puerto 8080 y responde con eco de los mensajes recibidos.
+
+### `src/controller/UsuarioController.php`
+- Controlador que maneja las operaciones relacionadas con usuarios.
+- Métodos disponibles:
+  - `registrar()`: Registra un nuevo usuario con nombre, email y contraseña.
+  - `login()`: Autentica al usuario y inicia sesión.
+  - `logout()`: Destruye la sesión actual.
+  - `verificarSesion()`: Verifica si hay una sesión activa.
+
+### `src/modelo/Conexion.php`
+- Contiene la función `connection()` que establece la conexión con la base de datos MySQL.
+- Configuración:
+  - Host: localhost
+  - Base de datos: bdproyectofinal
+  - Usuario: root
+  - Puerto: 3306
+
+### `src/modelo/UsuarioModel.php`
+- Modelo que interactúa con la tabla `usuario` en la base de datos.
+- Métodos disponibles:
+  - `registrarUsuario()`: Inserta un nuevo usuario con contraseña hasheada.
+  - `loginUsuario()`: Verifica credenciales y retorna datos del usuario.
+  - `obtenerUsuarioPorId()`: Obtiene información de un usuario por su ID.
+
+## Instalación y Configuración
+1. **Instalar Dependencias**: Ejecutar `composer install` para instalar las librerías necesarias (Ratchet).
+2. **Base de Datos**: Importar el archivo `bdproyectofinal.sql` en MySQL para crear la estructura de la base de datos.
+3. **Configuración**: Asegurarse de que el servidor MySQL esté corriendo y accesible con las credenciales especificadas.
+
+## Uso
+- **Iniciar el Servidor WebSocket**: Ejecutar `php src/api.php` desde la raíz del proyecto.
+- **API de Usuarios**: Los controladores esperan requests POST con los datos necesarios en formato JSON.
+- **Sesiones**: Se utilizan sesiones de PHP para mantener el estado de autenticación.
+
+## Tecnologías Utilizadas
+- **PHP**: Lenguaje principal del backend.
+- **Ratchet**: Librería para implementar WebSocket en PHP.
+- **MySQL**: Sistema de gestión de base de datos.
+- **Composer**: Gestor de dependencias para PHP.
+
+## Notas de Seguridad
+- Las contraseñas se almacenan hasheadas usando `password_hash()`.
+- Se utilizan prepared statements para todas las consultas a la base de datos.
+- La validación de entrada se realiza en el controlador antes de procesar los datos.
+
+## Archivos Adicionales
+- `composer.json` y `composer.lock`: Configuración de dependencias.
+- `Log.php`: Sistema de logging (requerido por el servidor WebSocket).
+- `errors.log`: Archivo de registro de errores.
+- `index.html`: Posible interfaz frontend (no incluido en src/).
