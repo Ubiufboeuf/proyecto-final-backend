@@ -1,27 +1,27 @@
 # Proyecto Final Backend
 
 ## Descripción
-Este es el backend de un proyecto final desarrollado en PHP que incluye funcionalidades de autenticación de usuarios y un servidor de chat en tiempo real utilizando WebSocket. El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información de los usuarios.
+Este es el backend de un proyecto final desarrollado en PHP que incluye funcionalidades de autenticación de usuarios y manejo de datos del seguimiento en tiempo real utilizando WebSocket. El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información de los usuarios.
 
 ## Características Principales
 - **Registro de Usuarios**: Permite crear nuevas cuentas con validación de datos.
 - **Login y Autenticación**: Verifica credenciales y maneja sesiones de usuario.
 - **Logout**: Cierra la sesión del usuario actual.
 - **Verificación de Sesión**: Comprueba si un usuario está logueado.
-- **Chat en Tiempo Real**: Servidor WebSocket que permite segumiento por  GPS de los Omnibus.
+- **Seguimiento Tiempo Real**: Servidor WebSocket que recibe y entrega la información del segumiento de los Ómnibus.
 - **Conexión Segura a BD**: Utiliza __prepared statements__ para prevenir inyecciones SQL
 - **Entrega de Rutas Fijas**: Provee información de las rutas fijas almacenadas en la carpeta `routes/`.
-- **Gestión de Viajes Personalizados**: Maneja la información de viajes personalizados desde `custom-trips/`
+- **Gestión de Viajes Personalizados**: Maneja la información de viajes personalizados que recibe de `custom-trips/`
 - **Formulario de Contacto**: Recibe quejas, sugerencias y otros mensajes a través de la ruta `contact/`.
 
 
 ## Estructura del Proyecto
-El código está organizado en la carpeta `src/` con las siguientes componentes:
+El código está organizado en la carpeta `src/` con los siguientes componentes:
 
 ### `src/api.php`
 - Implementa un servidor WebSocket usando la librería Ratchet.
-- Se usa para el segumiento de omnibus.
-- El servidor corre en el puerto 8080 y responde con eco de los mensajes recibidos.
+- Se usa para el segumiento de omnibus. Tanto para recibir los datos del chofer como para entregarlos a los usuarios.
+- El servidor corre en el puerto 8080 y responde con eco de los mensajes recibidos, o sea que en el momento que recibe lo que le entrega el chofer manda al resto de usuarios con un broadcast.
 
 ### `src/controller/UsuarioController.php`
 - Controlador que maneja las operaciones relacionadas con usuarios.
@@ -53,7 +53,7 @@ El código está organizado en la carpeta `src/` con las siguientes componentes:
 
 ## Uso
 - **Iniciar el Servidor WebSocket**: Ejecutar `php src/api.php` desde la raíz del proyecto.
-- **API de Usuarios**: Los controladores esperan ¨requests POST¨ con los datos necesarios en formato JSON.
+- **API de Usuarios**: Los controladores esperan `requests POST` con los datos necesarios en formato JSON.
 - **Sesiones**: Se utilizan sesiones de PHP para mantener el estado de autenticación.
 
 ## Puertos Utilizados
@@ -71,7 +71,7 @@ El código está organizado en la carpeta `src/` con las siguientes componentes:
 
 ## Notas de Seguridad
 - Las contraseñas se almacenan hasheadas usando `password_hash()`.
-- Se utilizan prepared statements para todas las consultas a la base de datos.
+- Se utilizan _prepared statements_ para todas las consultas a la base de datos.
 - La validación de entrada se realiza en el controlador antes de procesar los datos.
 
 ## Archivos Adicionales
