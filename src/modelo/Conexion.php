@@ -4,7 +4,7 @@ require_once __DIR__ . '/../../Log.php';
 function connection() {
     try {
         $host = "localhost";
-        $bd = "bdproyectofinal";
+        $bd = "bd_proyectofinal";
         $usuario = "root";
         $password = "";
         $puerto = "3306";
