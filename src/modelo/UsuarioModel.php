@@ -1,5 +1,4 @@
 <?php
-// modelo/UsuarioModel.php
 require_once 'Conexion.php';
 
 class UsuarioModel {
@@ -9,41 +8,35 @@ class UsuarioModel {
         $this->conn = connection();
     }
     
-    public function registrarUsuario($nombre, $contraseña, $correo) {
-        // Verificar si el correo ya existe
-        $checkSql = "SELECT ID_Usuario FROM usuario WHERE correo = ?";
-        $checkStmt = $this->conn->prepare($checkSql);
-        $checkStmt->bind_param("s", $correo);
-        $checkStmt->execute();
-        $result = $checkStmt->get_result();
-
-        if ($result->num_rows > 0) {
-            return ['success' => false, 'message' => 'El correo ya está registrado'];
-        }
-        
+    public function registrarUsuario($idUsuario, $contraseña) {
         // Registrar nuevo usuario
         $hashedPassword = password_hash($contraseña, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO usuario (nombre, password, correo) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO usuario (ID_Usuario, Contrasena) VALUES (?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sss", $nombre, $hashedPassword, $correo);
+        $stmt->bind_param("is", $idUsuario, $hashedPassword);
 
         if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Usuario registrado correctamente', 'user_id' => $this->conn->insert_id];
+            return [
+                'success' => true, 
+                'message' => 'Usuario registrado correctamente',
+                'user_id' => $idUsuario
+            ];
         } else {
             return ['success' => false, 'message' => 'Error al registrar usuario'];
         }
     }
 
-    public function loginUsuario($correo, $contraseña) {
-        $sql = "SELECT ID_Usuario, nombre, correo, password FROM usuario WHERE correo = ?";
+    public function loginUsuario($idUsuario, $contraseña) {
+        $sql = "SELECT ID_Usuario, Contrasena FROM usuario WHERE ID_Usuario = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("s", $correo);
+        $stmt->bind_param("i", $idUsuario);
         $stmt->execute();
         $result = $stmt->get_result();
         
         if ($result->num_rows == 1) {
             $user = $result->fetch_assoc();
-            if (password_verify($contraseña, $user['password'])) {
+            if (password_verify($contraseña, $user['Contrasena'])) {
+                unset($user['Contrasena']); // No enviar la contraseña en la respuesta
                 return ['success' => true, 'user' => $user];
             }
         }
@@ -51,7 +44,7 @@ class UsuarioModel {
     }
     
     public function obtenerUsuarioPorId($id) {
-        $sql = "SELECT ID_Usuario, nombre, correo FROM usuario WHERE ID_Usuario = ?";
+        $sql = "SELECT ID_Usuario FROM usuario WHERE ID_Usuario = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -63,4 +56,5 @@ class UsuarioModel {
         return null;
     }
 }
+
 ?>

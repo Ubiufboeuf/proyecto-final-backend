@@ -1,21 +1,27 @@
 <?php
-// controller/UsuarioController.php
 require_once '../modelo/UsuarioModel.php';
 session_start();
 
 class UsuarioController {
+    private $model;
+    
+    public function __construct() {
+        $this->model = new UsuarioModel();
+    }
+    
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $nombre = $_POST['nombre'] ?? '';
-            $email = $_POST['email'] ?? '';
+            $idUsuario = $_POST['id_usuario'] ?? '';
             $password = $_POST['password'] ?? '';
             
-            if (empty($nombre) || empty($email) || empty($password)) {
-                return json_encode(['success' => false, 'message' => 'Todos los campos son requeridos']);
+            if (empty($idUsuario) || empty($password)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'ID de usuario y contraseña son requeridos'
+                ]);
             }
             
-            $model = new UsuarioModel();
-            $result = $model->registrarUsuario($nombre, $email, $password);
+            $result = $this->model->registrarUsuario($idUsuario, $password);
             return json_encode($result);
         }
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
@@ -23,20 +29,25 @@ class UsuarioController {
     
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST['email'] ?? '';
+            $idUsuario = $_POST['id_usuario'] ?? '';
             $password = $_POST['password'] ?? '';
             
-            if (empty($email) || empty($password)) {
-                return json_encode(['success' => false, 'message' => 'Email y contraseña son requeridos']);
+            if (empty($idUsuario) || empty($password)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'ID de usuario y contraseña son requeridos'
+                ]);
             }
             
-            $model = new UsuarioModel();
-            $result = $model->loginUsuario($email, $password);
+            $result = $this->model->loginUsuario($idUsuario, $password);
             
             if ($result['success']) {
                 $_SESSION['user_id'] = $result['user']['ID_Usuario'];
-                $_SESSION['user_name'] = $result['user']['nombre'];
-                return json_encode(['success' => true, 'message' => 'Login exitoso']);
+                return json_encode([
+                    'success' => true, 
+                    'message' => 'Login exitoso',
+                    'user_id' => $result['user']['ID_Usuario']
+                ]);
             }
             
             return json_encode($result);
@@ -51,9 +62,16 @@ class UsuarioController {
     
     public function verificarSesion() {
         if (isset($_SESSION['user_id'])) {
-            return json_encode(['logged_in' => true, 'user_id' => $_SESSION['user_id'], 'user_name' => $_SESSION['user_name']]);
+            $userData = $this->model->obtenerUsuarioPorId($_SESSION['user_id']);
+            if ($userData) {
+                return json_encode([
+                    'logged_in' => true,
+                    'user_id' => $userData['ID_Usuario']
+                ]);
+            }
         }
         return json_encode(['logged_in' => false]);
     }
+
 }
 ?>
