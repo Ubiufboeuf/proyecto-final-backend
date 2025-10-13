@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../Log.php';
 // controller/UsuarioController.php
 require_once '../modelo/UsuarioModel.php';
 session_start();

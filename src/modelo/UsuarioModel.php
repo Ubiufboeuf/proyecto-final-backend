@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../Log.php';
 // modelo/UsuarioModel.php
 require_once 'Conexion.php';
 

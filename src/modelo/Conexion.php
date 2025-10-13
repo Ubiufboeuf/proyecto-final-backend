@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../Log.php';
 // modelo/Conexion.php
 function connection() {
     try {
