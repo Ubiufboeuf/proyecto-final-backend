@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
     <script>
         const socket = new WebSocket("ws://localhost:8080");
 
         socket.onopen = () => {
-        console.log("Conectado al servidor WebSocket");
-        socket.send("Hola desde el navegador!");
+            console.log("Conectado al servidor WebSocket");
+            socket.send("Hola desde el navegador!");
         };
 
         socket.onmessage = (event) => {
-        console.log("Mensaje del servidor:", event.data);
+            console.log("Mensaje del servidor:", event.data);
         };
 
         socket.onclose = () => {
-        console.log("Conexión cerrada");
+            console.log("Conexión cerrada");
         };
 
         socket.onerror = (err) => {
-        console.error("Error:", err);
+            console.error("Error:", err);
         };
     </script>
 </head>
+
 <body>
     documento de prueba
+
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+        laborum.
+    </p>
 </body>
+
 </html>
