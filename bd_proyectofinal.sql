@@ -34,11 +34,11 @@ CREATE TABLE `boleto` (
   `ID_Omnibus` int(11) NOT NULL,
   `Asiento` int(11) NOT NULL,
   `Coche` int(11) NOT NULL,
-  `Hora-Salida` datetime(6) NOT NULL,
-  `Hora-Llegada` datetime(6) NOT NULL,
-  `Ciudad-Salida` text NOT NULL,
-  `Ciudad-Llegada` text NOT NULL,
-  `Tipo-Omnibus` varchar(30) NOT NULL
+  `HoraSalida` datetime(6) NOT NULL,
+  `HoraLlegada` datetime(6) NOT NULL,
+  `CiudadSalida` text NOT NULL,
+  `CiudadLlegada` text NOT NULL,
+  `TipoOmnibus` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -77,10 +77,10 @@ CREATE TABLE `encomiendas` (
 CREATE TABLE `omnibus` (
   `ID_Omnibus` int(11) NOT NULL,
   `ID_Chofer` int(11) NOT NULL,
-  `Proxima-Parada` text NOT NULL,
-  `Ultima-Parada` text NOT NULL,
+  `ProximaParada` text NOT NULL,
+  `UltimaParada` text NOT NULL,
   `Coordenadas` point NOT NULL,
-  `Tipo-Omnibus` text NOT NULL
+  `TipoOmnibus` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -94,7 +94,7 @@ CREATE TABLE `pago` (
   `Fecha` int(11) NOT NULL,
   `Monto` int(11) NOT NULL,
   `ID_Persona` int(11) NOT NULL,
-  `Metodo-Pago` int(11) NOT NULL,
+  `MetodoPago` int(11) NOT NULL,
   `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -107,7 +107,7 @@ CREATE TABLE `pago` (
 CREATE TABLE `persona` (
   `ID_Usuario` int(11) NOT NULL,
   `Cedula` int(11) NOT NULL,
-  `Nombre-Completo` text NOT NULL,
+  `NombreCompleto` text NOT NULL,
   `Telefono` int(11) NOT NULL,
   `Correo` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -138,10 +138,10 @@ CREATE TABLE `servicios` (
   `ID_Pago` int(11) NOT NULL,
   `Giros` varchar(500) NOT NULL,
   `Tramites` varchar(300) NOT NULL,
-  `Linea-Pasajes` varchar(300) NOT NULL,
-  `Linea-Abono` varchar(300) NOT NULL,
+  `LineaPasajes` varchar(300) NOT NULL,
+  `LineaAbono` varchar(300) NOT NULL,
   `Partidas` varchar(300) NOT NULL,
-  `Fecha-Pago` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `FechaPago` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

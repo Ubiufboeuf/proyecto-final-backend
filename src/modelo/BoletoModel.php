@@ -11,7 +11,7 @@ class BoletoModel {
     public function registrarBoleto($idPersona, $idPago, $idOmnibus, $asiento, $coche, 
                                   $horaSalida, $horaLlegada, $ciudadSalida, $ciudadLlegada, $tipoOmnibus) {
         $sql = "INSERT INTO boleto (ID_Persona, ID_Pago, ID_Omnibus, Asiento, Coche, 
-                `Hora-Salida`, `Hora-Llegada`, `Ciudad-Salida`, `Ciudad-Llegada`, `Tipo-Omnibus`) 
+                `HoraSalida`, `HoraLlegada`, `CiudadSalida`, `CiudadLlegada`, `TipoOmnibus`) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("iiiiiissss", $idPersona, $idPago, $idOmnibus, $asiento, $coche,
@@ -26,7 +26,7 @@ class BoletoModel {
     }
     
     public function obtenerBoleto($id) {
-        $sql = "SELECT b.*, p.`Nombre-Completo` as nombre_pasajero 
+        $sql = "SELECT b.*, p.`NombreCompleto` as nombre_pasajero 
                 FROM boleto b 
                 JOIN persona p ON b.ID_Persona = p.ID_Usuario 
                 WHERE b.ID_Boleto = ?";

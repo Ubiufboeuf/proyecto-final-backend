@@ -9,7 +9,7 @@ class PagoModel {
     }
     
     public function registrarPago($fecha, $monto, $idPersona, $metodoPago) {
-        $sql = "INSERT INTO pago (Fecha, Monto, ID_Persona, `Metodo-Pago`, Estado) 
+        $sql = "INSERT INTO pago (Fecha, Monto, ID_Persona, `MetodoPago`, Estado) 
                 VALUES (?, ?, ?, ?, 1)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("iiii", $fecha, $monto, $idPersona, $metodoPago);
@@ -26,7 +26,7 @@ class PagoModel {
     }
     
     public function obtenerPago($id) {
-        $sql = "SELECT p.*, per.`Nombre-Completo` as nombre_cliente 
+        $sql = "SELECT p.*, per.`NombreCompleto` as nombre_cliente 
                 FROM pago p 
                 JOIN persona per ON p.ID_Persona = per.ID_Usuario 
                 WHERE p.ID_Pago = ?";
@@ -53,7 +53,7 @@ class PagoModel {
     }
     
     public function obtenerPagosPorUsuario($idUsuario) {
-        $sql = "SELECT p.*, per.`Nombre-Completo` as nombre_cliente 
+        $sql = "SELECT p.*, per.`NombreCompleto` as nombre_cliente 
                 FROM pago p 
                 JOIN persona per ON p.ID_Persona = per.ID_Usuario 
                 WHERE p.ID_Persona = ?";

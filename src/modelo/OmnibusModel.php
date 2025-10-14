@@ -10,8 +10,8 @@ class OmnibusModel {
     }
     
     public function registrarOmnibus($idChofer, $proximaParada, $ultimaParada, $coordenadas, $tipoOmnibus) {
-        $sql = "INSERT INTO omnibus (`ID_Chofer`, `Proxima-Parada`, `Ultima-Parada`, 
-                `Coordenadas`, `Tipo-Omnibus`) 
+        $sql = "INSERT INTO omnibus (`ID_Chofer`, `ProximaParada`, `UltimaParada`, 
+                `Coordenadas`, `TipoOmnibus`) 
                 VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("issss", $idChofer, $proximaParada, $ultimaParada, 
@@ -44,7 +44,7 @@ class OmnibusModel {
     }
     
     public function actualizarUbicacion($id, $proximaParada, $coordenadas) {
-        $sql = "UPDATE omnibus SET `Proxima-Parada` = ?, `Coordenadas` = ? 
+        $sql = "UPDATE omnibus SET `ProximaParada` = ?, `Coordenadas` = ? 
                 WHERE ID_Omnibus = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ssi", $proximaParada, $coordenadas, $id);

@@ -27,7 +27,7 @@ class ServicioModel {
     }
     
     public function obtenerServicio($id) {
-        $sql = "SELECT s.*, p.`Nombre-Completo` as nombre_cliente
+        $sql = "SELECT s.*, p.`NombreCompleto` as nombre_cliente
                 FROM servicios s
                 LEFT JOIN persona p ON s.ID_Usuario = p.ID_Usuario
                 WHERE s.ID_Servicios = ?";
