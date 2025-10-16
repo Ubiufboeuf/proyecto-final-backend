@@ -16,6 +16,8 @@ $action = $_GET['action'] ?? '';
 
 $controller = new UsuarioController();
 
+echo "hola";
+
 switch ($action) {
 
     //Usuario acciones:
