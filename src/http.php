@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Log.php';
 
@@ -11,36 +12,38 @@ require_once __DIR__ . '/controller/RutaController.php';
 require_once __DIR__ . '/controller/ServicioController.php';
 require_once __DIR__ . '/controller/UsuarioController.php';
 
-
-
 // Main script to handle HTTP requests
-header('Content-Type: application/json');
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 session_start();
 
+// Inicializar todos los controladores
+$usuarioController = new UsuarioController();
+$boletoController = new BoletoController();
+$choferController = new ChoferController();
+$encomiendaController = new EncomiendaController();
+$omnibusController = new OmnibusController();
+$pagoController = new PagoController();
+$rutaController = new RutaController();
+$servicioController = new ServicioController();
+
 $action = $_GET['action'] ?? '';
 
-$controller = new UsuarioController();
-
-echo "hola";
-
 switch ($action) {
-
     //Usuario acciones:
     case 'registrar':
-        echo $controller->registrar();
+        echo $usuarioController->registrar();
         break;
     case 'login':
-        echo $controller->login();
+        echo $usuarioController->login();
         break;
     case 'logout':
-        echo $controller->logout();
+        echo $usuarioController->logout();
         break;
     case 'verificarSesion':
-        echo $controller->verificarSesion();
+        echo $usuarioController->verificarSesion();
         break;
 
     //Boleto acciones:
@@ -79,6 +82,14 @@ switch ($action) {
         echo $omnibusController->listar();
         break;
 
+    //Chofer acciones:
+    case 'registrarChofer':
+        echo $choferController->registrar();
+        break;
+    case 'obtenerChofer':
+        echo $choferController->obtener();
+        break;
+
     //Ruta acciones:
     case 'registrarRuta':
         echo $rutaController->registrar();
@@ -114,4 +125,5 @@ switch ($action) {
         echo json_encode(['success' => false, 'message' => 'Acción no válida']);
         break;
 }
+
 ?>
