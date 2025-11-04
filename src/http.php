@@ -1,8 +1,17 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../Log.php';
+
+require_once __DIR__ . '/controller/BoletoController.php';
+require_once __DIR__ . '/controller/ChoferController.php';
+require_once __DIR__ . '/controller/EncomiendaController.php';
+require_once __DIR__ . '/controller/OmnibusController.php';
+require_once __DIR__ . '/controller/PagoController.php';
+require_once __DIR__ . '/controller/RutaController.php';
+require_once __DIR__ . '/controller/ServicioController.php';
 require_once __DIR__ . '/controller/UsuarioController.php';
-require_once __DIR__ . '/modelo/UsuarioModel.php';
+
+
 
 // Main script to handle HTTP requests
 header('Content-Type: application/json');
