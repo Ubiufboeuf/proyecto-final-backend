@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-11-2025 a las 18:38:43
+-- Tiempo de generación: 04-11-2025 a las 18:45:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -81,6 +81,17 @@ CREATE TABLE `omnibus` (
   `UltimaParada` text NOT NULL,
   `Coordenadas` point NOT NULL,
   `TipoOmnibus` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `omnibusruta`
+--
+
+CREATE TABLE `omnibusruta` (
+  `ID_Omnibus` int(11) NOT NULL,
+  `ID_Ruta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -193,6 +204,13 @@ ALTER TABLE `encomiendas`
 ALTER TABLE `omnibus`
   ADD PRIMARY KEY (`ID_Omnibus`),
   ADD KEY `choferomnibus` (`ID_Chofer`);
+
+--
+-- Indices de la tabla `omnibusruta`
+--
+ALTER TABLE `omnibusruta`
+  ADD KEY `ID_Omnibus` (`ID_Omnibus`),
+  ADD KEY `ID_Ruta` (`ID_Ruta`);
 
 --
 -- Indices de la tabla `pago`
@@ -308,6 +326,13 @@ ALTER TABLE `encomiendas`
 --
 ALTER TABLE `omnibus`
   ADD CONSTRAINT `choferomnibus` FOREIGN KEY (`ID_Chofer`) REFERENCES `chofer` (`ID_Chofer`);
+
+--
+-- Filtros para la tabla `omnibusruta`
+--
+ALTER TABLE `omnibusruta`
+  ADD CONSTRAINT `ID_Omnibus` FOREIGN KEY (`ID_Omnibus`) REFERENCES `omnibus` (`ID_Omnibus`),
+  ADD CONSTRAINT `ID_Ruta` FOREIGN KEY (`ID_Ruta`) REFERENCES `ruta` (`ID_Ruta`);
 
 --
 -- Filtros para la tabla `pago`
