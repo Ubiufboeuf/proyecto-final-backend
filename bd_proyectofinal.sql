@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-10-2025 a las 18:10:32
+-- Tiempo de generación: 04-11-2025 a las 18:38:43
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `bd_proyectofinal_3ro`
+-- Base de datos: `bd_proyectofinal`
 --
 
 -- --------------------------------------------------------
@@ -119,11 +119,16 @@ CREATE TABLE `persona` (
 --
 
 CREATE TABLE `ruta` (
-  `ID_Rutas` int(11) NOT NULL,
-  `Origen` point NOT NULL,
-  `Destino` point NOT NULL,
-  `Paradas` point NOT NULL,
-  `ID_Omnibus` int(11) NOT NULL
+  `ID_Ruta` int(11) NOT NULL,
+  `Origen` text NOT NULL,
+  `Destino` text NOT NULL,
+  `Tipo` text NOT NULL,
+  `Precio` int(11) NOT NULL,
+  `Duracion` int(11) NOT NULL,
+  `Faltas` text NOT NULL DEFAULT '[]',
+  `Horas` text NOT NULL DEFAULT '[]',
+  `Trazo_actual` text NOT NULL DEFAULT '[]',
+  `Trazo_planeado` text NOT NULL DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -206,8 +211,7 @@ ALTER TABLE `persona`
 -- Indices de la tabla `ruta`
 --
 ALTER TABLE `ruta`
-  ADD PRIMARY KEY (`ID_Rutas`),
-  ADD KEY `omnibusruta` (`ID_Omnibus`);
+  ADD PRIMARY KEY (`ID_Ruta`);
 
 --
 -- Indices de la tabla `servicios`
@@ -267,7 +271,7 @@ ALTER TABLE `persona`
 -- AUTO_INCREMENT de la tabla `ruta`
 --
 ALTER TABLE `ruta`
-  MODIFY `ID_Rutas` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Ruta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `servicios`
@@ -310,12 +314,6 @@ ALTER TABLE `omnibus`
 --
 ALTER TABLE `pago`
   ADD CONSTRAINT `personapago` FOREIGN KEY (`ID_Persona`) REFERENCES `persona` (`ID_Usuario`);
-
---
--- Filtros para la tabla `ruta`
---
-ALTER TABLE `ruta`
-  ADD CONSTRAINT `omnibusruta` FOREIGN KEY (`ID_Omnibus`) REFERENCES `omnibus` (`ID_Omnibus`);
 
 --
 -- Filtros para la tabla `servicios`
