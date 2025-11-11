@@ -1,5 +1,4 @@
 <?php
-
 require_once '../modelo/UsuarioModel.php';
 session_start();
 
@@ -16,6 +15,7 @@ class UsuarioController {
             $telefono = $_POST['telefono'] ?? '';
             $contrasenia = $_POST['contrasenia'] ?? '';
             
+            // Validaciones
             if (empty($correo) || empty($telefono) || empty($contrasenia)) {
                 return json_encode([
                     'success' => false, 
@@ -36,6 +36,14 @@ class UsuarioController {
                 return json_encode([
                     'success' => false, 
                     'message' => 'El teléfono debe ser un número'
+                ]);
+            }
+            
+            // Validar que la contraseña tenga mínimo 6 caracteres
+            if (strlen($contrasenia) < 6) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'La contraseña debe tener al menos 6 caracteres'
                 ]);
             }
             
@@ -107,6 +115,13 @@ class UsuarioController {
                 return json_encode([
                     'success' => false, 
                     'message' => 'Nueva contraseña es requerida'
+                ]);
+            }
+            
+            if (strlen($nuevaContrasenia) < 6) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'La contraseña debe tener al menos 6 caracteres'
                 ]);
             }
             

@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Conexion.php';
 
 class UsuarioModel {
@@ -11,7 +10,7 @@ class UsuarioModel {
     
     public function registrarUsuario($correo, $telefono, $contrasenia) {
         // Verificar si el correo ya existe
-        $checkSql = "SELECT ID_Usuario FROM usuario WHERE correo = ?";
+        $checkSql = "SELECT correo FROM usuario WHERE correo = ?";
         $checkStmt = $this->conn->prepare($checkSql);
         $checkStmt->bind_param("s", $correo);
         $checkStmt->execute();
@@ -21,26 +20,34 @@ class UsuarioModel {
             return ['success' => false, 'message' => 'El correo ya está registrado'];
         }
         
-        // Hashear la contraseña
+        // Hashear la contraseña (aumentar tamaño de contrasenia en BD a varchar(255))
         $hashedPassword = password_hash($contrasenia, PASSWORD_DEFAULT);
+        
+        // Insertar usuario con ID auto-generado
         $sql = "INSERT INTO usuario (correo, telefono, contrasenia) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sis", $correo, $telefono, $hashedPassword);
 
         if ($stmt->execute()) {
+            $userId = $this->conn->insert_id;
             return [
                 'success' => true, 
                 'message' => 'Usuario registrado correctamente',
-                'user_id' => $this->conn->insert_id
+                'user_id' => $userId
             ];
         } else {
-            return ['success' => false, 'message' => 'Error al registrar usuario'];
+            return ['success' => false, 'message' => 'Error al registrar usuario: ' . $this->conn->error];
         }
     }
 
     public function loginUsuario($correo, $contrasenia) {
         $sql = "SELECT ID_Usuario, correo, telefono, contrasenia FROM usuario WHERE correo = ?";
         $stmt = $this->conn->prepare($sql);
+        
+        if (!$stmt) {
+            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
+        }
+        
         $stmt->bind_param("s", $correo);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -48,16 +55,23 @@ class UsuarioModel {
         if ($result->num_rows == 1) {
             $user = $result->fetch_assoc();
             if (password_verify($contrasenia, $user['contrasenia'])) {
-                unset($user['contrasenia']); // No enviar la contraseña en la respuesta
+                unset($user['contrasenia']);
                 return ['success' => true, 'user' => $user];
+            } else {
+                return ['success' => false, 'message' => 'Contraseña incorrecta'];
             }
         }
-        return ['success' => false, 'message' => 'Credenciales inválidas'];
+        return ['success' => false, 'message' => 'El correo no está registrado'];
     }
     
     public function obtenerUsuarioPorId($id) {
         $sql = "SELECT ID_Usuario, correo, telefono FROM usuario WHERE ID_Usuario = ?";
         $stmt = $this->conn->prepare($sql);
+        
+        if (!$stmt) {
+            return null;
+        }
+        
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -72,6 +86,11 @@ class UsuarioModel {
         $hashedPassword = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
         $sql = "UPDATE usuario SET contrasenia = ? WHERE ID_Usuario = ?";
         $stmt = $this->conn->prepare($sql);
+        
+        if (!$stmt) {
+            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
+        }
+        
         $stmt->bind_param("si", $hashedPassword, $idUsuario);
         
         if ($stmt->execute()) {
@@ -83,6 +102,11 @@ class UsuarioModel {
     public function actualizarTelefono($idUsuario, $telefono) {
         $sql = "UPDATE usuario SET telefono = ? WHERE ID_Usuario = ?";
         $stmt = $this->conn->prepare($sql);
+        
+        if (!$stmt) {
+            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
+        }
+        
         $stmt->bind_param("ii", $telefono, $idUsuario);
         
         if ($stmt->execute()) {
