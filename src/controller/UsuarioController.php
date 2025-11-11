@@ -1,4 +1,5 @@
 <?php
+
 require_once '../modelo/UsuarioModel.php';
 session_start();
 
@@ -11,17 +12,34 @@ class UsuarioController {
     
     public function registrar() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idUsuario = $_POST['id_usuario'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $correo = $_POST['correo'] ?? '';
+            $telefono = $_POST['telefono'] ?? '';
+            $contrasenia = $_POST['contrasenia'] ?? '';
             
-            if (empty($idUsuario) || empty($password)) {
+            if (empty($correo) || empty($telefono) || empty($contrasenia)) {
                 return json_encode([
                     'success' => false, 
-                    'message' => 'ID de usuario y contraseña son requeridos'
+                    'message' => 'Correo, teléfono y contraseña son requeridos'
                 ]);
             }
             
-            $result = $this->model->registrarUsuario($idUsuario, $password);
+            // Validar formato de correo
+            if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'El correo no es válido'
+                ]);
+            }
+            
+            // Validar que el teléfono sea un número
+            if (!is_numeric($telefono)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'El teléfono debe ser un número'
+                ]);
+            }
+            
+            $result = $this->model->registrarUsuario($correo, $telefono, $contrasenia);
             return json_encode($result);
         }
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
@@ -29,24 +47,25 @@ class UsuarioController {
     
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $idUsuario = $_POST['id_usuario'] ?? '';
-            $password = $_POST['password'] ?? '';
+            $correo = $_POST['correo'] ?? '';
+            $contrasenia = $_POST['contrasenia'] ?? '';
             
-            if (empty($idUsuario) || empty($password)) {
+            if (empty($correo) || empty($contrasenia)) {
                 return json_encode([
                     'success' => false, 
-                    'message' => 'ID de usuario y contraseña son requeridos'
+                    'message' => 'Correo y contraseña son requeridos'
                 ]);
             }
             
-            $result = $this->model->loginUsuario($idUsuario, $password);
+            $result = $this->model->loginUsuario($correo, $contrasenia);
             
             if ($result['success']) {
                 $_SESSION['user_id'] = $result['user']['ID_Usuario'];
+                $_SESSION['user_email'] = $result['user']['correo'];
                 return json_encode([
                     'success' => true, 
                     'message' => 'Login exitoso',
-                    'user_id' => $result['user']['ID_Usuario']
+                    'user' => $result['user']
                 ]);
             }
             
@@ -66,12 +85,60 @@ class UsuarioController {
             if ($userData) {
                 return json_encode([
                     'logged_in' => true,
-                    'user_id' => $userData['ID_Usuario']
+                    'user' => $userData
                 ]);
             }
         }
         return json_encode(['logged_in' => false]);
     }
 
+    public function actualizarContraseña() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['user_id'])) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'Usuario no autenticado'
+                ]);
+            }
+
+            $nuevaContrasenia = $_POST['nueva_contrasenia'] ?? '';
+            
+            if (empty($nuevaContrasenia)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'Nueva contraseña es requerida'
+                ]);
+            }
+            
+            $result = $this->model->actualizarContraseña($_SESSION['user_id'], $nuevaContrasenia);
+            return json_encode($result);
+        }
+        return json_encode(['success' => false, 'message' => 'Método no permitido']);
+    }
+
+    public function actualizarTelefono() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!isset($_SESSION['user_id'])) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'Usuario no autenticado'
+                ]);
+            }
+
+            $telefono = $_POST['telefono'] ?? '';
+            
+            if (empty($telefono) || !is_numeric($telefono)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'Teléfono válido es requerido'
+                ]);
+            }
+            
+            $result = $this->model->actualizarTelefono($_SESSION['user_id'], $telefono);
+            return json_encode($result);
+        }
+        return json_encode(['success' => false, 'message' => 'Método no permitido']);
+    }
 }
+
 ?>

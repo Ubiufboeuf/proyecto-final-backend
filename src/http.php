@@ -45,7 +45,12 @@ switch ($action) {
     case 'verificarSesion':
         echo $usuarioController->verificarSesion();
         break;
-
+    case 'actualizarContrasenia':
+        echo $usuarioController->actualizarContraseña();
+        break;
+    case 'actualizarTelefono':
+        echo $usuarioController->actualizarTelefono();
+        break;
     //Boleto acciones:
     case 'registrarBoleto':
         echo $boletoController->registrar();
