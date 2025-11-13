@@ -10,32 +10,71 @@ class UsuarioController {
     }
     
     public function registrar() {
+        // header('Content-Type: application/json'); // <- cabecera para mandar al cliente
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $correo = $_POST['correo'] ?? '';
-            $telefono = $_POST['telefono'] ?? '';
-            $contrasenia = $_POST['contrasenia'] ?? '';
-            
-            // Validaciones
-            if (empty($correo) || empty($telefono) || empty($contrasenia)) {
+            $json_data = file_get_contents("php://input");
+            $user_data = json_decode($json_data, true); // Devuelve un array asociativo
+
+            $nombre_completo = $user_data['fullname'] ?? '';
+            $documento = $user_data['document'] ?? '';
+            $correo = $user_data['email'] ?? '';
+            $telefono = $user_data['phone'] ?? '';
+            $contrasenia = $user_data['password'] ?? '';
+            $contacto = $user_data['contact'] ?? '';
+
+            // // Validaciones
+            // echo 'contacto:'; echo $contacto; echo "\n";
+            // echo 'correo:'; echo $correo; echo "\n";
+            // echo 'telefono:'; echo $telefono; echo "\n";
+
+            if (($contacto == 'email' && empty($correo)) && ($contacto == 'phone' && empty($telefono))) {
                 return json_encode([
-                    'success' => false, 
-                    'message' => 'Correo, teléfono y contraseña son requeridos'
+                    'success' => false,
+                    'message' => 'Falta especificar un contacto (correo o teléfono)'
                 ]);
             }
             
+            if ($contacto == 'email' && empty($correo)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el correo'
+                ]);
+            }
+
+            if ($contacto == 'phone' && empty($telefono)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el teléfono'
+                ]);
+            }
+
+            if (empty($nombre_completo)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el nombre completo (nombre apellido)'
+                ]);
+            }
+
+            if (empty($documento)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el documento (cédula o dni)'
+                ]);
+            }
+
+            if (empty($contrasenia)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar la contraseña'
+                ]);
+            }
+
             // Validar formato de correo
             if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
                 return json_encode([
                     'success' => false, 
                     'message' => 'El correo no es válido'
-                ]);
-            }
-            
-            // Validar que el teléfono sea un número
-            if (!is_numeric($telefono)) {
-                return json_encode([
-                    'success' => false, 
-                    'message' => 'El teléfono debe ser un número'
                 ]);
             }
             
@@ -48,7 +87,7 @@ class UsuarioController {
             }
             
             $result = $this->model->registrarUsuario($correo, $telefono, $contrasenia);
-            return json_encode($result);
+            return json_encode(['success' => true, 'message' => 'todo bien']);
         }
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
     }
