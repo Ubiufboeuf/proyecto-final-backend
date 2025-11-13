@@ -32,7 +32,7 @@ CREATE TABLE `usuario` (
   `nombre_completo` text NOT NULL,
   `documento` text NOT NULL,
   `correo` text NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `telefono` text NOT NULL,
   `contrasenia` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
