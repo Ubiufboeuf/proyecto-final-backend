@@ -1,5 +1,5 @@
 <?php
-require_once '../modelo/UsuarioModel.php';
+require_once __DIR__ . '/../modelo/UsuarioModel.php';
 session_start();
 
 class UsuarioController {
