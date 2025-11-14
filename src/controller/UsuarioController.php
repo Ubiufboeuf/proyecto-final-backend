@@ -71,7 +71,7 @@ class UsuarioController {
             }
 
             // Validar formato de correo
-            if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            if ($contacto == 'email' && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
                 return json_encode([
                     'success' => false, 
                     'message' => 'El correo no es válido'
@@ -86,8 +86,8 @@ class UsuarioController {
                 ]);
             }
             
-            $result = $this->model->registrarUsuario($correo, $telefono, $contrasenia);
-            return json_encode(['success' => true, 'message' => 'todo bien']);
+            $result = $this->model->registrarUsuario($nombre_completo, $documento, $contrasenia, $user_data[$contacto], $contacto);
+            return json_encode($result);
         }
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
     }
