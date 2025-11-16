@@ -22,11 +22,6 @@ class UsuarioController {
             $contrasenia = $user_data['password'] ?? '';
             $contacto = $user_data['contact'] ?? '';
 
-            // // Validaciones
-            // echo 'contacto:'; echo $contacto; echo "\n";
-            // echo 'correo:'; echo $correo; echo "\n";
-            // echo 'telefono:'; echo $telefono; echo "\n";
-
             if (($contacto == 'email' && empty($correo)) && ($contacto == 'phone' && empty($telefono))) {
                 return json_encode([
                     'success' => false,
