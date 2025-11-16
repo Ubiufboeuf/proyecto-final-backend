@@ -86,6 +86,20 @@ class UsuarioController {
             }
             
             $result = $this->model->registrarUsuario($nombre_completo, $documento, $contrasenia, $user_data[$contacto], $contacto);
+            if ($result['success']) {
+                setcookie(
+                    "berrutti-web-auth-token",
+                    $result['token'],
+                    [
+                        "expires" => time() + (60 * 60 * 24 * 7), // 7 días
+                        "path" => "/",
+                        "httponly" => true,
+                        "secure" => false, // cambiar cuando la use la web en producción
+                        "samesite" => "None"
+                    ]
+                );
+            }
+
             return json_encode($result);
         }
         return json_encode(['success' => false, 'message' => 'Método no permitido']);

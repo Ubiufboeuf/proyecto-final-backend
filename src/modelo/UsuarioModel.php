@@ -49,11 +49,20 @@ class UsuarioModel {
 
         if ($stmt->execute()) {
             $userId = $this->conn->insert_id;
+
+            // Crear token de sesión aleatorio
+            $token = bin2hex(random_bytes(32));
+
+            // Guardar el token en la BD
+            $update = $this->conn->prepare("UPDATE usuario SET token_sesion = ? WHERE ID_Usuario = ?");
+            $update->bind_param("si", $token, $userId);
+            $update->execute();
+
             return [
                 'success' => true,
-                
                 'message' => 'Usuario registrado correctamente',
-                'user_id' => $userId
+                'user_id' => $userId,
+                'token' => $token
             ];
         } else {
             return ['success' => false, 'message' => 'Error al registrar usuario: ' . $this->conn->error];
