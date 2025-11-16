@@ -11,11 +11,27 @@ require_once __DIR__ . '/../Log.php';
 // require_once __DIR__ . '/controller/ServicioController.php';
 require_once __DIR__ . '/controller/UsuarioController.php';
 
-// Main script to handle HTTP requests
-header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+$allowed = [
+    'http://localhost:4321',
+    'http://127.0.0.1:4321',
+    'https://proyecto-final-frontend.pages.dev'
+];
+
+if (in_array($origin, $allowed, true)) {
+    header("Access-Control-Allow-Origin: $origin");
+}
+
+header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+
+// Responder preflight
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
 
 // Inicializar todos los controladores
 $usuarioController = new UsuarioController();
