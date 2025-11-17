@@ -111,56 +111,56 @@ class UsuarioModel {
         ];
     }
     
-    public function obtenerUsuarioPorId($id) {
-        $sql = "SELECT ID_Usuario, correo, telefono FROM usuario WHERE ID_Usuario = ?";
-        $stmt = $this->conn->prepare($sql);
+    // public function obtenerUsuarioPorId($id) {
+    //     $sql = "SELECT ID_Usuario, correo, telefono FROM usuario WHERE ID_Usuario = ?";
+    //     $stmt = $this->conn->prepare($sql);
         
-        if (!$stmt) {
-            return null;
-        }
+    //     if (!$stmt) {
+    //         return null;
+    //     }
         
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    //     $stmt->bind_param("i", $id);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
         
-        if ($result->num_rows == 1) {
-            return $result->fetch_assoc();
-        }
-        return null;
-    }
+    //     if ($result->num_rows == 1) {
+    //         return $result->fetch_assoc();
+    //     }
+    //     return null;
+    // }
 
-    public function actualizarContraseña($idUsuario, $nuevaContrasenia) {
-        $hashedPassword = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
-        $sql = "UPDATE usuario SET contrasenia = ? WHERE ID_Usuario = ?";
-        $stmt = $this->conn->prepare($sql);
+    // public function actualizarContraseña($idUsuario, $nuevaContrasenia) {
+    //     $hashedPassword = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);
+    //     $sql = "UPDATE usuario SET contrasenia = ? WHERE ID_Usuario = ?";
+    //     $stmt = $this->conn->prepare($sql);
         
-        if (!$stmt) {
-            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
-        }
+    //     if (!$stmt) {
+    //         return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
+    //     }
         
-        $stmt->bind_param("si", $hashedPassword, $idUsuario);
+    //     $stmt->bind_param("si", $hashedPassword, $idUsuario);
         
-        if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Contraseña actualizada correctamente'];
-        }
-        return ['success' => false, 'message' => 'Error al actualizar contraseña'];
-    }
+    //     if ($stmt->execute()) {
+    //         return ['success' => true, 'message' => 'Contraseña actualizada correctamente'];
+    //     }
+    //     return ['success' => false, 'message' => 'Error al actualizar contraseña'];
+    // }
 
-    public function actualizarTelefono($idUsuario, $telefono) {
-        $sql = "UPDATE usuario SET telefono = ? WHERE ID_Usuario = ?";
-        $stmt = $this->conn->prepare($sql);
+    // public function actualizarTelefono($idUsuario, $telefono) {
+    //     $sql = "UPDATE usuario SET telefono = ? WHERE ID_Usuario = ?";
+    //     $stmt = $this->conn->prepare($sql);
         
-        if (!$stmt) {
-            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
-        }
+    //     if (!$stmt) {
+    //         return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
+    //     }
         
-        $stmt->bind_param("ii", $telefono, $idUsuario);
+    //     $stmt->bind_param("ii", $telefono, $idUsuario);
         
-        if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Teléfono actualizado correctamente'];
-        }
-        return ['success' => false, 'message' => 'Error al actualizar teléfono'];
-    }
+    //     if ($stmt->execute()) {
+    //         return ['success' => true, 'message' => 'Teléfono actualizado correctamente'];
+    //     }
+    //     return ['success' => false, 'message' => 'Error al actualizar teléfono'];
+    // }
 }
 
 ?>
