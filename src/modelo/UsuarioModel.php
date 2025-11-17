@@ -15,7 +15,6 @@ class UsuarioModel {
             : "SELECT ID_Usuario FROM usuario WHERE telefono = ?";
         $checkStmt = $this->conn->prepare($checkSql);
         
-        // Enlazamos las variables: correo, telefono, documento.
         $checkStmt->bind_param("s", $contacto);
         $checkStmt->execute();
         $result = $checkStmt->get_result();
