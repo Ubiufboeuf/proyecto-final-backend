@@ -131,7 +131,7 @@ class UsuarioModel {
     }
     
     public function obtenerUsuarioPorToken($token) {
-        $sql = "SELECT ID_Usuario, nombre_completo, documento, telefono, correo FROM usuario WHERE token_sesion = ?";
+        $sql = "SELECT ID_Usuario, nombre_completo, documento, telefono, correo, rol FROM usuario WHERE token_sesion = ?";
         
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $token);
