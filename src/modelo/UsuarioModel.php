@@ -83,7 +83,9 @@ class UsuarioModel {
         $result = $stmt->get_result();
         
         if ($result->num_rows == 0) {
-            return ['success' => false, 'message' => 'El correo no está registrado'];
+            return ['success' => false, 'message' => $tipoContacto == 'email'
+                ? 'El correo no está registrado'
+                : 'El teléfono no está registrado'];
         }
 
         if ($result->num_rows > 1) {
