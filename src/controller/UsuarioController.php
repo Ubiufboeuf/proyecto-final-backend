@@ -179,19 +179,6 @@ class UsuarioController {
     //     session_destroy();
     //     return json_encode(['success' => true, 'message' => 'Sesión cerrada']);
     // }
-    
-    // public function verificarSesion() {
-    //     if (isset($_SESSION['user_id'])) {
-    //         $userData = $this->model->obtenerUsuarioPorId($_SESSION['user_id']);
-    //         if ($userData) {
-    //             return json_encode([
-    //                 'logged_in' => true,
-    //                 'user' => $userData
-    //             ]);
-    //         }
-    //     }
-    //     return json_encode(['logged_in' => false]);
-    // }
 
     // public function actualizarContraseña() {
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
