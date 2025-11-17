@@ -89,7 +89,7 @@ class UsuarioController {
                         "expires" => time() + (60 * 60 * 24 * 7), // 7 días
                         "path" => "/",
                         "httponly" => true,
-                        "secure" => false, // cambiar cuando la use la web en producción
+                        "secure" => true,
                         "samesite" => "Strict"
                     ]
                 );
@@ -164,7 +164,7 @@ class UsuarioController {
                         "expires" => time() + (60 * 60 * 24 * 7), // 7 días
                         "path" => "/",
                         "httponly" => true,
-                        "secure" => false, // cambiar cuando la use la web en producción
+                        "secure" => true,
                         "samesite" => "Strict"
                     ]
                 );
@@ -203,7 +203,7 @@ class UsuarioController {
                 "expires" => 1, // forzar expiración de cookie para que el navegador la elimine
                 "path" => "/",
                 "httponly" => true,
-                "secure" => false, // cambiar cuando la use la web en producción
+                "secure" => true,
                 "samesite" => "Strict"
             ]
         );
