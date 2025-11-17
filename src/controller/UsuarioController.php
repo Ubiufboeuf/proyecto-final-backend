@@ -90,7 +90,7 @@ class UsuarioController {
                         "path" => "/",
                         "httponly" => true,
                         "secure" => false, // cambiar cuando la use la web en producción
-                        "samesite" => "None"
+                        "samesite" => "Strict"
                     ]
                 );
             }
