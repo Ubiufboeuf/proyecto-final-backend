@@ -22,7 +22,7 @@ Este es el backend del proyecto final de año en base a la empresa Berrutti Turi
 El código está organizado en la carpeta `src/` con los siguientes componentes:
 
 ### `src/http.php`
-- Actúa como el punto de entrada principal de la API REST.
+- Actúa como el punto de entrada principal de la API REST, (es el Api.php nombrado http.php para diferenciar con websockets).
 - Maneja CORS (Cross-Origin Resource Sharing) permitiendo orígenes específicos.
 - Inicializa los controladores disponibles.
 - Enruta las solicitudes basándose en el parámetro GET `action` hacia los métodos correspondientes de los controladores.
