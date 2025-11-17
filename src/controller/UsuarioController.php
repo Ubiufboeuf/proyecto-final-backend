@@ -100,34 +100,80 @@ class UsuarioController {
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
     }
     
-    // public function login() {
-    //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    //         $correo = $_POST['correo'] ?? '';
-    //         $contrasenia = $_POST['contrasenia'] ?? '';
+    public function login() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $json_data = file_get_contents("php://input");
+            $user_data = json_decode($json_data, true); // Devuelve un array asociativo
+
+            $correo = $user_data['email'] ?? '';
+            $telefono = $user_data['phone'] ?? '';
+            $contrasenia = $user_data['password'] ?? '';
+            $tipoContacto = $user_data['contact'] ?? '';
+            $contacto = $user_data[$tipoContacto];
             
-    //         if (empty($correo) || empty($contrasenia)) {
-    //             return json_encode([
-    //                 'success' => false, 
-    //                 'message' => 'Correo y contraseña son requeridos'
-    //             ]);
-    //         }
+            if (($contacto == 'email' && empty($correo)) && ($contacto == 'phone' && empty($telefono))) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar un contacto (correo o teléfono)'
+                ]);
+            }
+
+            if ($contacto == 'email' && empty($correo)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el correo'
+                ]);
+            }
+
+            if ($contacto == 'phone' && empty($telefono)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar el teléfono'
+                ]);
+            }
+
+            if (empty($contrasenia)) {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Falta especificar la contraseña'
+                ]);
+            }
+
+            // Validar formato de correo
+            if ($contacto == 'email' && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'El correo no es válido'
+                ]);
+            }
+
+            // Validar que la contraseña tenga mínimo 6 caracteres
+            if (strlen($contrasenia) < 6) {
+                return json_encode([
+                    'success' => false, 
+                    'message' => 'La contraseña debe tener al menos 6 caracteres'
+                ]);
+            }
             
-    //         $result = $this->model->loginUsuario($correo, $contrasenia);
-            
-    //         if ($result['success']) {
-    //             $_SESSION['user_id'] = $result['user']['ID_Usuario'];
-    //             $_SESSION['user_email'] = $result['user']['correo'];
-    //             return json_encode([
-    //                 'success' => true, 
-    //                 'message' => 'Login exitoso',
-    //                 'user' => $result['user']
-    //             ]);
-    //         }
-            
-    //         return json_encode($result);
-    //     }
-    //     return json_encode(['success' => false, 'message' => 'Método no permitido']);
-    // }
+            $result = $this->model->loginUsuario($contacto, $tipoContacto, $contrasenia);
+            if ($result['success']) {
+                setcookie(
+                    "berrutti-web-auth-token",
+                    $result['token'],
+                    [
+                        "expires" => time() + (60 * 60 * 24 * 7), // 7 días
+                        "path" => "/",
+                        "httponly" => true,
+                        "secure" => false, // cambiar cuando la use la web en producción
+                        "samesite" => "Strict"
+                    ]
+                );
+            }
+
+            return json_encode($result);
+        }
+        return json_encode(['success' => false, 'message' => 'Método no permitido']);
+    }
     
     // public function logout() {
     //     session_destroy();

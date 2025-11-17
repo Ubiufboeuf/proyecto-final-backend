@@ -67,28 +67,48 @@ class UsuarioModel {
         }
     }
 
-    public function loginUsuario($correo, $contrasenia) {
-        $sql = "SELECT ID_Usuario, correo, telefono, contrasenia FROM usuario WHERE correo = ?";
+    public function loginUsuario($contacto, $tipoContacto, $contrasenia) {
+        // Orden:
+        // 1. Buscar solo por email o teléfono
+        // 2. luego validar contraseña (porque se guarda hasheada, así que buscando con ella nunca daría resultados)
+        // 3. y luego (si todo es correcto) crear la cookie con el token
+
+        $sql = $tipoContacto == 'email'
+            ? "SELECT ID_Usuario, token_sesion, correo, contrasenia FROM usuario WHERE correo = ?"
+            : "SELECT ID_Usuario, token_sesion, telefono, contrasenia FROM usuario WHERE telefono = ?";
+
         $stmt = $this->conn->prepare($sql);
-        
-        if (!$stmt) {
-            return ['success' => false, 'message' => 'Error en la consulta: ' . $this->conn->error];
-        }
-        
-        $stmt->bind_param("s", $correo);
+        $stmt->bind_param("s", $contacto);
         $stmt->execute();
         $result = $stmt->get_result();
         
-        if ($result->num_rows == 1) {
-            $user = $result->fetch_assoc();
-            if (password_verify($contrasenia, $user['contrasenia'])) {
-                unset($user['contrasenia']);
-                return ['success' => true, 'user' => $user];
-            } else {
-                return ['success' => false, 'message' => 'Contraseña incorrecta'];
-            }
+        if ($result->num_rows == 0) {
+            return ['success' => false, 'message' => 'El correo no está registrado'];
         }
-        return ['success' => false, 'message' => 'El correo no está registrado'];
+
+        if ($result->num_rows > 1) {
+            // habria que guardar esto en el archivo de logs
+            return ['success' => false, 'message' => 'Error interno: Usuario duplicado. Por favor, contacta al soporte'];
+        }
+        
+        // Solo 1 resultado
+        $user = $result->fetch_assoc();
+
+        // validar contraseña
+        if (!password_verify($contrasenia, $user['contrasenia'])) {
+            return ['success' => false, 'message' => 'Contraseña incorrecta'];
+        }
+
+        $token = bin2hex(random_bytes(32));
+        $update = $this->conn->prepare("UPDATE usuario SET token_sesion = ? WHERE ID_Usuario = ?");
+        $update->bind_param("si", $token, $user['ID_Usuario']);
+        $update->execute();
+
+        return [
+            'success' => true,
+            'message' => 'Usuario registrado correctamente',
+            'token' => $token
+        ];
     }
     
     public function obtenerUsuarioPorId($id) {
