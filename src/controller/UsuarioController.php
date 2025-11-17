@@ -111,21 +111,21 @@ class UsuarioController {
             $tipoContacto = $user_data['contact'] ?? '';
             $contacto = $user_data[$tipoContacto];
             
-            if (($contacto == 'email' && empty($correo)) && ($contacto == 'phone' && empty($telefono))) {
+            if (($tipoContacto == 'email' && empty($correo)) && ($tipoContacto == 'phone' && empty($telefono))) {
                 return json_encode([
                     'success' => false,
                     'message' => 'Falta especificar un contacto (correo o teléfono)'
                 ]);
             }
 
-            if ($contacto == 'email' && empty($correo)) {
+            if ($tipoContacto == 'email' && empty($correo)) {
                 return json_encode([
                     'success' => false,
                     'message' => 'Falta especificar el correo'
                 ]);
             }
 
-            if ($contacto == 'phone' && empty($telefono)) {
+            if ($tipoContacto == 'phone' && empty($telefono)) {
                 return json_encode([
                     'success' => false,
                     'message' => 'Falta especificar el teléfono'
@@ -140,7 +140,7 @@ class UsuarioController {
             }
 
             // Validar formato de correo
-            if ($contacto == 'email' && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+            if ($tipoContacto == 'email' && !filter_var($correo, FILTER_VALIDATE_EMAIL)) {
                 return json_encode([
                     'success' => false, 
                     'message' => 'El correo no es válido'
