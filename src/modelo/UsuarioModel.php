@@ -130,23 +130,16 @@ class UsuarioModel {
         return ['success' => true]; // esto no se aprovecha, pero es más legible así que dejarlo vacío
     }
     
-    // public function obtenerUsuarioPorId($id) {
-    //     $sql = "SELECT ID_Usuario, correo, telefono FROM usuario WHERE ID_Usuario = ?";
-    //     $stmt = $this->conn->prepare($sql);
+    public function obtenerUsuarioPorToken($token) {
+        $sql = "SELECT ID_Usuario, nombre_completo, documento, telefono, correo FROM usuario WHERE token_sesion = ?";
         
-    //     if (!$stmt) {
-    //         return null;
-    //     }
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+        $result = $stmt->get_result();
         
-    //     $stmt->bind_param("i", $id);
-    //     $stmt->execute();
-    //     $result = $stmt->get_result();
-        
-    //     if ($result->num_rows == 1) {
-    //         return $result->fetch_assoc();
-    //     }
-    //     return null;
-    // }
+        return $result->fetch_assoc();
+    }
 
     // public function actualizarContraseña($idUsuario, $nuevaContrasenia) {
     //     $hashedPassword = password_hash($nuevaContrasenia, PASSWORD_DEFAULT);

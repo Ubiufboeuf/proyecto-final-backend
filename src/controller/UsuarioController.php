@@ -211,6 +211,27 @@ class UsuarioController {
         return json_encode(['success' => true, 'message' => 'Sesión cerrada']);
     }
 
+    public function obtenerDatosUsuario () {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            return json_encode(['success' => false, 'message' => 'Método no permitido']);
+        }
+
+        $json_data = file_get_contents("php://input");
+        $data = json_decode($json_data, true);
+
+        if (!$data['token']) {
+            return json_encode(['success' => false, 'message' => 'No tienes un token de sesión']);    
+        }
+
+        $result = $this->model->obtenerUsuarioPorToken($data['token']);
+
+        if (!$result) {
+            return json_encode(['success' => false, 'message' => 'No se encontraron datos de usuario asociado al token. Por favor, contacta al soporte']);
+        }
+
+        return json_encode(['success' => true, 'usuario' => $result]);
+    }
+
     // public function actualizarContraseña() {
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //         if (!isset($_SESSION['user_id'])) {

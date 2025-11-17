@@ -59,9 +59,9 @@ switch ($action) {
     // case 'verificarSesion':
     //     echo $usuarioController->verificarSesion();
     //     break;
-    // case 'obtenerDatosUsuario':
-    //     echo $usuarioController->obtenerDatosUsuario();
-    //     break;
+    case 'obtenerDatosUsuario':
+        echo $usuarioController->obtenerDatosUsuario();
+        break;
     // case 'actualizarContrasenia':
     //     echo $usuarioController->actualizarContraseña();
     //     break;
