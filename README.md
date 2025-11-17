@@ -1,7 +1,7 @@
 # Proyecto Final Backend
 
 ## Descripción
-Este es el backend del proyecto final de año en base a la empresa Berrutti Turismo, el mismo esta desarrollado en PHP que incluye funcionalidades de gestión de usuarios y está preparado para manejar operaciones relacionadas con un sistema de transporte (ómnibus, boletos, pagos, etc.). El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información.
+Backend de la web para Berrutti Turismo, desarrollado en PHP que incluye funcionalidades de gestión de usuarios y está preparado para manejar operaciones relacionadas con un sistema de transporte (ómnibus, boletos, pagos, etc.). El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información.
 
 ## Características Principales
 - **Registro de Usuarios**: Permite crear nuevas cuentas con validación de datos (nombre completo, documento, correo o teléfono, contraseña).
