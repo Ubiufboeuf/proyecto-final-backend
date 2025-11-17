@@ -1,7 +1,7 @@
 # Proyecto Final Backend
 
 ## Descripción
-Este es el backend de un proyecto final desarrollado en PHP que incluye funcionalidades de gestión de usuarios y está preparado para manejar operaciones relacionadas con un sistema de transporte (ómnibus, boletos, pagos, etc.). El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información.
+Este es el backend del proyecto final de año en base a la empresa Berrutti Turismo, el mismo esta desarrollado en PHP que incluye funcionalidades de gestión de usuarios y está preparado para manejar operaciones relacionadas con un sistema de transporte (ómnibus, boletos, pagos, etc.). El proyecto está estructurado siguiendo el patrón MVC (Modelo-Vista-Controlador) y utiliza una base de datos MySQL para almacenar la información.
 
 ## Características Principales
 - **Registro de Usuarios**: Permite crear nuevas cuentas con validación de datos (nombre completo, documento, correo o teléfono, contraseña).
@@ -104,7 +104,7 @@ Los modelos interactúan directamente con la base de datos utilizando prepared s
 - **Autenticación**: Se utilizan tokens de sesión almacenados en cookies HTTP-only para mantener la autenticación.
 
 ## Puertos Utilizados
-- **Servidor HTTP/API**: Corre en el puerto configurado en tu servidor web (por ejemplo, Apache en 80/443) o usando `php -S localhost:8000 src/http.php` para desarrollo.
+- **Servidor HTTP/API**: Corre en el puerto configurado en el servidor web (por ejemplo, Apache en 80/443) o usando `php -S localhost:8000 src/http.php` para desarrollo.
 
 ## Tecnologías Utilizadas
 - **PHP**: Lenguaje principal del backend.
