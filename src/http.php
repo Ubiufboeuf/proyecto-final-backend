@@ -53,9 +53,9 @@ switch ($action) {
     case 'login':
         echo $usuarioController->login();
         break;
-    // case 'logout':
-    //     echo $usuarioController->logout();
-    //     break;
+    case 'logout':
+        echo $usuarioController->logout();
+        break;
     // case 'verificarSesion':
     //     echo $usuarioController->verificarSesion();
     //     break;

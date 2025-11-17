@@ -112,6 +112,23 @@ class UsuarioModel {
             'token' => $token
         ];
     }
+
+    public function cerrarSesion ($token) {
+        $sql = "UPDATE usuario SET token_sesion = null WHERE token_sesion = ?";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $token);
+        $stmt->execute();
+
+        $affected_rows = $stmt->affected_rows;
+
+        if ($affected_rows != 1) {
+            return ['success' => false];
+        }
+
+        // todo correcto
+        return ['success' => true]; // esto no se aprovecha, pero es más legible así que dejarlo vacío
+    }
     
     // public function obtenerUsuarioPorId($id) {
     //     $sql = "SELECT ID_Usuario, correo, telefono FROM usuario WHERE ID_Usuario = ?";

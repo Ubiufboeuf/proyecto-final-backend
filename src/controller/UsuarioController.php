@@ -110,7 +110,7 @@ class UsuarioController {
             $contrasenia = $user_data['password'] ?? '';
             $tipoContacto = $user_data['contact'] ?? '';
             $contacto = $user_data[$tipoContacto];
-            
+
             if (($tipoContacto == 'email' && empty($correo)) && ($tipoContacto == 'phone' && empty($telefono))) {
                 return json_encode([
                     'success' => false,
@@ -175,10 +175,41 @@ class UsuarioController {
         return json_encode(['success' => false, 'message' => 'Método no permitido']);
     }
     
-    // public function logout() {
-    //     session_destroy();
-    //     return json_encode(['success' => true, 'message' => 'Sesión cerrada']);
-    // }
+    public function logout() {
+        // Orden:
+        // 1. comprobar si el usuario tiene una cookie de sesión
+        // 3. actualizar la bd - primero actualizar la fuente de la verdad
+        // 2. invalidar la cookie - después tratar la experiencia de usuario
+
+        // comprobar la cookie
+        $token = $_COOKIE['berrutti-web-auth-token'] ?? null;
+
+        if (!$token) {
+            return json_encode(['success' => false, 'message' => 'No tienes una sesión activa']);
+        }
+
+        // actualizar bd
+        $result = $this->model->cerrarSesion($token);
+
+        if (!$result['success']) {
+            return json_encode(['success' => false, 'message' => 'Error interno. Error en la BD al cerrar sesión. Por favor, contacta al soporte']);
+        }
+        
+        // invalidar la cookie
+        setcookie(
+            "berrutti-web-auth-token",
+            $token,
+            [
+                "expires" => 1, // forzar expiración de cookie para que el navegador la elimine
+                "path" => "/",
+                "httponly" => true,
+                "secure" => false, // cambiar cuando la use la web en producción
+                "samesite" => "Strict"
+            ]
+        );
+        
+        return json_encode(['success' => true, 'message' => 'Sesión cerrada']);
+    }
 
     // public function actualizarContraseña() {
     //     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
