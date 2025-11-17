@@ -60,7 +60,6 @@ class UsuarioModel {
             return [
                 'success' => true,
                 'message' => 'Usuario registrado correctamente',
-                'user_id' => $userId,
                 'token' => $token
             ];
         } else {
